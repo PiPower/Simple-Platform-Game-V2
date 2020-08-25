@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Pliki źródłowe">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Pliki zasobów">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Binds">
+      <UniqueIdentifier>{d13e83bf-03e0-4ccd-b735-106f8ae9a178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{60f31efd-ae62-4e47-a3ab-140befa7a5bd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DirectX.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicalObject.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageFile.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="BindBase.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="BindPack.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBufferBind.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLayoutBind.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShaderBind.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveTopologyBind.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="PSConstantBufferBind.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplerBind.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureBind.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBufferBind.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShaderBind.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="VSConstantBufforBind.h">
+      <Filter>Binds</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GraphicalObject.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageFile.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="BindBase.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>
