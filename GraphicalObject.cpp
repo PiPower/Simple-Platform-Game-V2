@@ -226,6 +226,30 @@ void GraphicalObject::Draw()
 	pGFX->DrawIndexed(Indicies);
 }
 
+GraphicalObject::CollRect GraphicalObject::GetRect()
+{
+	CollRect ret;
+
+	PositionTransformer Transform;
+	Transform.transforms = XMMatrixRotationZ(this->RotationAngle)
+		* XMMatrixScaling(this->ScaleX, this->ScaleY, 0) * XMMatrixTranslation(this->OffsetX, this->OffsetY, 0);
+
+	//Top Left--------------------------------------------------
+	XMVECTOR vec = XMLoadFloat2(&CollisionRectangle.TopLeft);
+	XMVECTOR res = XMVector2Transform(vec, Transform.transforms);
+	XMFLOAT2 FinalVec;
+	XMStoreFloat2(&FinalVec, res);
+	ret.TopLeft = FinalVec;
+	//Bottom Right   --------------------------------------------------
+	XMVECTOR vec2 = XMLoadFloat2(&CollisionRectangle.BottomRight);
+	XMVECTOR res2 = XMVector2Transform(vec2, Transform.transforms);
+	XMFLOAT2 FinalVec2;
+	XMStoreFloat2(&FinalVec2, res2);
+	ret.BottomRight = FinalVec2;
+
+	return ret;
+}
+
 GraphicalObject::~GraphicalObject()
 {
 	for (auto b : Binds)

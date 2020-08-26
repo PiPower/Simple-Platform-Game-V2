@@ -33,7 +33,7 @@ public:
 	// Does not copy Camera const buffer
 	GraphicalObject(const GraphicalObject& copy);
 	GraphicalObject(GraphicalObject&& doner);
-
+	// Camera stuff
 	void BindCamera(Camera Tranformation);
 	void UpdateCamera(Camera Tranformation);
 	//Area of pixels to draw in rect
@@ -42,6 +42,8 @@ public:
 	void Scale(float ScaleX = 1, float ScaleY = 1);
 	void Rotate(float RotationAngle);
 	void Draw();
+	// For collision detection
+	CollRect GetRect();
 	~GraphicalObject();
 protected:
 	struct Point
@@ -60,6 +62,7 @@ protected:
 	unsigned short int NextVScBuffSlots =0;
 	std::vector<Point> Vertecies;
 	std::vector<BindBase* > Binds;
+	CollRect CollisionRectangle{ {-1,1},{1,-1} };
 	VSConstantBufferBind<PositionTransformer>* PosTransformer=nullptr;
 	VSConstantBufferBind<Camera>* Cam = nullptr;
 	ImageFile* Img;

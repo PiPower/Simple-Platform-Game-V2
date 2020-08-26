@@ -2,6 +2,7 @@
 
 using namespace std;
 using namespace DirectX;
+using namespace std::chrono;
 
 Board::Board(Graphics* pGFX,float BlockScale)
 	:
@@ -52,6 +53,14 @@ Board::Board(Graphics* pGFX,float BlockScale)
 	transforms.proportion = this->proportion;
 	ScreenBinds.push_back(new VSConstantBufferBind(transforms, pGFX));
 	ScreenBinds.push_back(new PrimitiveTopologyBind(D3D11_PRIMITIVE_TOPOLOGY_LINELIST, pGFX));
+
+	Mario = new Entity(pGFX, L"D:\\C++\\Programy C++\\2DGame\\Mario.png", 0, 0, BlockScale, BlockScale);
+	Mario->SetUVCord(83, 94, 162, 178);
+
+	Mario->BindCamera(cam);
+
+
+	last = high_resolution_clock::now();
 }
 
 void Board::Controll(Window& wnd)
@@ -69,7 +78,7 @@ void Board::Controll(Window& wnd)
 			int BlockNumbY = floor((PosY + BlockScale) / (BlockScale * 2));
 
 			GraphicalObject* NewRect = new GraphicalObject(pGFX, L"D:\\C++\\Programy C++\\2DGame\\Blocks.png",
-		    BlockNumbX* (BlockScale * 2), BlockNumbY * (BlockScale * 2), BlockScale, BlockScale);
+		    BlockNumbX* (BlockScale * 2)-cam.X, BlockNumbY * (BlockScale * 2)-cam.Y, BlockScale, BlockScale);
 			NewRect->SetUVCord(97, 113,1,17);
 			NewRect->BindCamera(cam);
 			Blocks.push_back(NewRect);
@@ -82,8 +91,12 @@ void Board::Controll(Window& wnd)
 	if (wnd.IsKeyPressed(VK_RIGHT))cam.X +=-BlockScale * 2;
 	if (wnd.IsKeyPressed(VK_LEFT)) cam.X += BlockScale * 2;
 
+	// Time stuff
 
-
+	const auto old = last;
+	last = steady_clock::now();
+	const duration<float> frameTime = last - old;
+	Mario->UpdatePos(wnd, frameTime.count(), cam, Blocks);
 }
 
 void Board::Draw()
@@ -100,4 +113,7 @@ void Board::Draw()
 		rect->UpdateCamera(cam);
 		rect->Draw();
 	}
+
+	Mario->UpdateCamera(cam);
+	Mario->Draw();
 }

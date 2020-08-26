@@ -3,6 +3,11 @@
 #include "BindPack.h"
 #include "GraphicalObject.h"
 #include "Window.h"
+#include "Entity.h"
+#include <chrono>
+
+
+typedef std::chrono::time_point<std::chrono::high_resolution_clock> TimePoint;
 class Board
 {
 private:
@@ -31,5 +36,8 @@ private:
 	float proportion;
 	float BlockScale;
 	Graphics* pGFX;
+	Entity* Mario = nullptr;
+	TimePoint last;
+	TimePoint old;
 };
 

@@ -151,6 +151,7 @@
     <ClInclude Include="BindPack.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="DirectX.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="GraphicalObject.h" />
     <ClInclude Include="ImageFile.h" />
     <ClInclude Include="IndexBufferBind.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="BindBase.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="DirectX.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GraphicalObject.cpp" />
     <ClCompile Include="ImageFile.cpp" />
     <ClCompile Include="Main.cpp" />

@@ -75,6 +75,9 @@
     <ClInclude Include="Board.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicalObject.cpp">
@@ -96,6 +99,9 @@
       <Filter>Binds</Filter>
     </ClCompile>
     <ClCompile Include="Board.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
