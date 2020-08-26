@@ -1,19 +1,127 @@
 #include "Entity.h"
+#include <functional>
+#include <cmath>
+#include <queue>
+#include <algorithm>
 
 using namespace DirectX;
 
 void Entity::UpdatePos(Window& wnd, float Time, Camera& cam, std::vector<GraphicalObject*>& Blocks)
 {
 
-	XMFLOAT2 MoveVec = { 0,-0.6f };
+	XMFLOAT2 MoveVec = { 0,-1.0f };
 
 	if (wnd.IsKeyPressed('D')) MoveVec.x += VelX;
 	if (wnd.IsKeyPressed('A')) MoveVec.x += -VelX;
-	if (wnd.IsKeyPressed('W'))MoveVec.y += VelY;
+	if (wnd.IsKeyPressed('W'))MoveVec.y += 3*VelY;
 	if (wnd.IsKeyPressed('S')) MoveVec.y += -VelY;
+
+	CollRect PlayerRect = GetRect();
+	// Collisions
+
+	XMFLOAT2 contact_point;
+	XMFLOAT2 contact_normal{ 0,0 };
+	float contact_time;
+
+	XMFLOAT2 senVel = { MoveVec.x * Time,MoveVec.y * Time };
+	std::vector<std::pair<int, float>> vec;
+
+
+	for (int i = 0; i < Blocks.size(); i++)
+	{
+		if (DynamicRectVsRect(PlayerRect, senVel, Blocks[i]->GetRect (), contact_point, contact_normal, contact_time))
+		{
+			vec.push_back({ i,contact_time });
+		}
+	}
+
+	std::sort(vec.begin(), vec.end(), [](const std::pair<int, float>& a, const std::pair<int, float>& b)
+		{return a.second < b.second; }  );
+
+	for (int i = 0; i < vec.size(); i++)
+	{
+		if (DynamicRectVsRect(PlayerRect, MoveVec, Blocks[vec[i].first]->GetRect(), contact_point, contact_normal, contact_time))
+		{
+			MoveVec.x += contact_normal.x * (1.0f - contact_time) * abs(MoveVec.x);
+			MoveVec.y += contact_normal.y * (1.0f - contact_time) * abs(MoveVec.y);
+		}
+	}
 
 	Move(MoveVec.x * Time, MoveVec.y * Time);
 
-	CollRect PlayerRect = GetRect();
+	PlayerRect = GetRect();
 	if (PlayerRect.TopLeft.x + cam.X < -1.0|| PlayerRect.BottomRight.x + cam.X > 1.0)  cam.X += -MoveVec.x * Time;
+}
+
+
+bool Entity::RectVsRey(const DirectX::XMFLOAT2& RayOrigin, const DirectX::XMFLOAT2& RayDir, const CollRect& rect,
+	DirectX::XMFLOAT2& ContactPoint, DirectX::XMFLOAT2& ContactNormal, float& t_hit_near)
+{
+	XMFLOAT2 t_near{ (rect.TopLeft.x - RayOrigin.x) / RayDir.x,(rect.TopLeft.y - RayOrigin.y) / RayDir.y };
+	XMFLOAT2 t_far{ (rect.BottomRight.x - RayOrigin.x) / RayDir.x,(rect.BottomRight.y - RayOrigin.y) / RayDir.y };
+
+	if (t_near.x > t_far.x) std::swap(t_near.x, t_far.x);
+	if (t_near.y > t_far.y) std::swap(t_near.y, t_far.y);
+
+	if (std::isnan(t_far.y) || std::isnan(t_far.x)) return false;
+	if (std::isnan(t_near.y) || std::isnan(t_near.x)) return false;
+
+
+	if (t_near.x > t_far.y || t_near.y > t_far.x) return false;
+
+#ifdef max
+#undef max
+#endif 
+
+#ifdef min
+#undef min
+#endif 
+
+	t_hit_near = std::max(t_near.x, t_near.y);
+	float t_hit_far = std::min(t_far.x, t_far.y);
+
+	if (t_hit_far < 0) return false;
+
+	ContactPoint = { RayOrigin.x + t_hit_near * RayDir.x,RayOrigin.y + t_hit_near * RayDir.y };
+
+	if (t_near.x > t_near.y)
+		if (RayDir.x < 0)
+			ContactNormal = { 1,0 };
+		else
+			ContactNormal = { -1,0 };
+	else if (t_near.x < t_near.y)
+		if (RayDir.y < 0)
+			ContactNormal = { 0,1 };
+		else
+			ContactNormal = { 0,-1 };
+
+	return true;
+}
+
+bool Entity::DynamicRectVsRect(const CollRect& in, DirectX::XMFLOAT2& Velocity, const CollRect& target,
+	DirectX::XMFLOAT2& contact_point, DirectX::XMFLOAT2& contact_normal, float& contact_time)
+{
+	if (Velocity.x == 0 && Velocity.y == 0)
+		return false;
+
+	CollRect Expanded{ {0,0},{0,0} };
+
+	XMFLOAT2 SizeIn{ abs(in.BottomRight.x - in.TopLeft.x),abs(in.BottomRight.y - in.TopLeft.y) };
+
+	float x = target.TopLeft.x - SizeIn.x / 2.0f;
+	Expanded.TopLeft = { target.TopLeft.x - SizeIn.x / 2.0f,target.TopLeft.y + SizeIn.y / 2.0f };
+	Expanded.BottomRight.x = target.BottomRight.x + SizeIn.x / 2.0f;
+	Expanded.BottomRight.y = target.BottomRight.y - SizeIn.y / 2.0f;
+
+
+
+	if (RectVsRey(XMFLOAT2{ in.TopLeft.x + SizeIn.x / 2.0f, in.TopLeft.y - SizeIn.y / 2.0f }, Velocity, Expanded, contact_point, contact_normal, contact_time))
+	{
+		if (contact_time <= 1.0f)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

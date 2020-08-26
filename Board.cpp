@@ -54,7 +54,7 @@ Board::Board(Graphics* pGFX,float BlockScale)
 	ScreenBinds.push_back(new VSConstantBufferBind(transforms, pGFX));
 	ScreenBinds.push_back(new PrimitiveTopologyBind(D3D11_PRIMITIVE_TOPOLOGY_LINELIST, pGFX));
 
-	Mario = new Entity(pGFX, L"D:\\C++\\Programy C++\\2DGame\\Mario.png", 0, 0, BlockScale, BlockScale);
+	Mario = new Entity(pGFX, L"D:\\C++\\Programy C++\\2DGame\\Mario.png", 0, 0, BlockScale*0.9, BlockScale*0.9);
 	Mario->SetUVCord(83, 94, 162, 178);
 
 	Mario->BindCamera(cam);
