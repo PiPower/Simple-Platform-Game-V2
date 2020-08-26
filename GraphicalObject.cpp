@@ -131,6 +131,7 @@ GraphicalObject::GraphicalObject(const GraphicalObject& copy)
 	PosTransformer = new VSConstantBufferBind<PositionTransformer>(PosTranform, pGFX);
 	Binds.push_back(PosTransformer);
 	NextVScBuffSlots = 1;
+
 }
 
 GraphicalObject::GraphicalObject(GraphicalObject&& doner)
@@ -149,6 +150,20 @@ NextPScBuffSlot(doner.NextPScBuffSlot), NextVScBuffSlots(doner.NextVScBuffSlots)
 	Img = doner.Img;
 	doner.Img = nullptr;
 
+	Cam = doner.Cam;
+	doner.Cam = nullptr;
+}
+
+void GraphicalObject::BindCamera(Camera Tranformation)
+{
+	Cam = new VSConstantBufferBind<Camera>(Tranformation, pGFX, NextVScBuffSlots);
+	Binds.push_back(Cam);
+	NextVScBuffSlots += 1;
+}
+
+void GraphicalObject::UpdateCamera(Camera Tranformation)
+{
+	Cam->Map(Tranformation);
 }
 
 void GraphicalObject::SetUVCord(int LowerBoundX, int HigherBoundX, int LowerBoundY, int HigherBoundY)

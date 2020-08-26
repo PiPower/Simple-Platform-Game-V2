@@ -1,6 +1,8 @@
 #pragma once
 #include "DirectX.h"
 #include "BindPack.h"
+#include "GraphicalObject.h"
+#include "Window.h"
 class Board
 {
 private:
@@ -19,9 +21,12 @@ private:
 	};
 public:
 	Board(Graphics* pGFX, float BlockScale );
+	void Controll(Window& wnd);
 	void Draw();
 private:
 	std::vector<BindBase* >ScreenBinds;
+	std::vector<GraphicalObject* > Blocks;
+	GraphicalObject::Camera cam{ 0,0 };
 	int VertexCount;
 	float proportion;
 	float BlockScale;

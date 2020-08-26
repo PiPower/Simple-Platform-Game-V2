@@ -5,6 +5,12 @@
 class GraphicalObject
 {
 public:
+	struct Camera
+	{
+		float X;
+		float Y;
+		float padd[2];
+	};
 	struct UVTransformer
 	{
 		float LowerBoundX;
@@ -24,8 +30,12 @@ public:
 	};
 public:
 	GraphicalObject(Graphics* gfx, std::wstring path, float OffsetX = 0, float OffsetY = 0, float ScaleX = 1, float ScaleY = 1, float RotationAngle = 0);
+	// Does not copy Camera const buffer
 	GraphicalObject(const GraphicalObject& copy);
 	GraphicalObject(GraphicalObject&& doner);
+
+	void BindCamera(Camera Tranformation);
+	void UpdateCamera(Camera Tranformation);
 	//Area of pixels to draw in rect
 	void SetUVCord(int LowerBoundX, int HigherBoundX, int LowerBoundY, int HigherBoundY);
 	void Move(float OffsetX = 0, float OffsetY = 0);
@@ -51,6 +61,7 @@ protected:
 	std::vector<Point> Vertecies;
 	std::vector<BindBase* > Binds;
 	VSConstantBufferBind<PositionTransformer>* PosTransformer=nullptr;
+	VSConstantBufferBind<Camera>* Cam = nullptr;
 	ImageFile* Img;
 	Graphics* pGFX = nullptr;
 };
