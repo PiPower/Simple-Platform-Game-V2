@@ -126,6 +126,11 @@ void Graphics::DrawIndexed(UINT size, UINT StartLoc,UINT BaseLoc)
 	pImmediateContext->DrawIndexed(size, StartLoc, BaseLoc);
 }
 
+void Graphics::Draw(UINT VertexCount,UINT StartLoc)
+{
+	pImmediateContext->Draw(VertexCount, StartLoc);
+}
+
 void Graphics::BeginFrame(const float& R, const float& G, const float& B, const float& A)
 {
 	const float color[] = {A,R,G,B};

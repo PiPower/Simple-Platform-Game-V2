@@ -72,6 +72,9 @@
     <ClInclude Include="VSConstantBufforBind.h">
       <Filter>Binds</Filter>
     </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicalObject.cpp">
@@ -92,12 +95,21 @@
     <ClCompile Include="BindBase.cpp">
       <Filter>Binds</Filter>
     </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VanillaPixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="VanillaVertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
