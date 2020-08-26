@@ -3,6 +3,13 @@
 #include "Window.h"
 class Entity : public GraphicalObject
 {
+
+	enum LastDirection
+	{
+		Right,
+		Standing,
+		Left
+	};
 public:
 	using::GraphicalObject::GraphicalObject;
 	void UpdatePos(Window& wnd, float Time, Camera& cam, std::vector<GraphicalObject*>& Blocks);
@@ -13,5 +20,10 @@ public:
 private:
 	float VelX = 0.4;
 	float VelY = 1.0f;
+	bool Jump = false;
+	float JumpFactor = 0.0f;
+	float Timer = 0;
+	float FrameChange = 0.05;
+	LastDirection  LastDir;
 };
 

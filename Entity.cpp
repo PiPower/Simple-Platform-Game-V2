@@ -5,45 +5,66 @@
 #include <algorithm>
 
 using namespace DirectX;
+using namespace std;
 
+class Comparision
+{
+public:
+	bool operator()(pair<int, float >& p1, pair<int, float >& p2)
+	{
+		return p1.second > p2.second;
+	}
+};
 void Entity::UpdatePos(Window& wnd, float Time, Camera& cam, std::vector<GraphicalObject*>& Blocks)
 {
 
-	XMFLOAT2 MoveVec = { 0,-1.0f };
+	XMFLOAT2 MoveVec = { 0,-0.6f };
 
 	if (wnd.IsKeyPressed('D')) MoveVec.x += VelX;
 	if (wnd.IsKeyPressed('A')) MoveVec.x += -VelX;
 	if (wnd.IsKeyPressed('W'))MoveVec.y += 3*VelY;
 	if (wnd.IsKeyPressed('S')) MoveVec.y += -VelY;
+	if (wnd.IsKeyPressed(VK_SPACE) && !Jump)
+	{
+		JumpFactor = 1.0f;
+		Jump = true;
+	}
+	MoveVec.y += 5 * VelY * JumpFactor;
+	if (JumpFactor != 0) JumpFactor -= 0.1f;
+
 
 	CollRect PlayerRect = GetRect();
-	// Collisions
-
+	// Collisons
 	XMFLOAT2 contact_point;
 	XMFLOAT2 contact_normal{ 0,0 };
 	float contact_time;
 
 	XMFLOAT2 senVel = { MoveVec.x * Time,MoveVec.y * Time };
-	std::vector<std::pair<int, float>> vec;
+	priority_queue<pair<int, float>,vector<pair<int, float>>, Comparision> Rects;
 
 
 	for (int i = 0; i < Blocks.size(); i++)
 	{
 		if (DynamicRectVsRect(PlayerRect, senVel, Blocks[i]->GetRect (), contact_point, contact_normal, contact_time))
 		{
-			vec.push_back({ i,contact_time });
+			Rects.push({ i,contact_time });
 		}
 	}
 
-	std::sort(vec.begin(), vec.end(), [](const std::pair<int, float>& a, const std::pair<int, float>& b)
-		{return a.second < b.second; }  );
-
-	for (int i = 0; i < vec.size(); i++)
+	while(!Rects.empty())
 	{
-		if (DynamicRectVsRect(PlayerRect, MoveVec, Blocks[vec[i].first]->GetRect(), contact_point, contact_normal, contact_time))
+		auto vec = Rects.top();
+		Rects.pop();
+
+		if (DynamicRectVsRect(PlayerRect, MoveVec, Blocks[vec.first]->GetRect(), contact_point, contact_normal, contact_time))
 		{
 			MoveVec.x += contact_normal.x * (1.0f - contact_time) * abs(MoveVec.x);
 			MoveVec.y += contact_normal.y * (1.0f - contact_time) * abs(MoveVec.y);
+			if (contact_normal.y == 1)
+			{
+				JumpFactor = 0;
+				Jump = false;
+			}
 		}
 	}
 
