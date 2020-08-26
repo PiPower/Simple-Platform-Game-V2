@@ -24,6 +24,8 @@ public:
 	};
 public:
 	GraphicalObject(Graphics* gfx, std::wstring path, float OffsetX = 0, float OffsetY = 0, float ScaleX = 1, float ScaleY = 1, float RotationAngle = 0);
+	GraphicalObject(const GraphicalObject& copy);
+	GraphicalObject(GraphicalObject&& doner);
 	//Area of pixels to draw in rect
 	void SetUVCord(int LowerBoundX, int HigherBoundX, int LowerBoundY, int HigherBoundY);
 	void Move(float OffsetX = 0, float OffsetY = 0);

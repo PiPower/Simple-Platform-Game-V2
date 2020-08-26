@@ -86,7 +86,7 @@ public:
 	//GraphicsStuff
 	void InitDx11();
 	void DX_BeginFrame(const float& R=0, const float& G=0, const float& B=0, const float& A=0);
-	Graphics* const GetGraphicsPointer() { return pDx11; }
+	Graphics* GetGraphicsPointer() { return pDx11; }
 	void DX_EndFrame();
 private:
 	static LRESULT CALLBACK  HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
@@ -114,7 +114,6 @@ private:
 	std::queue<MouseEvent> MouseQueue;
 	// Graphics ------------------------------------
 	std::wstring lol;
-public:
 	Graphics*  pDx11 = nullptr;
 };
 

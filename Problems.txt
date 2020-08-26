@@ -1,0 +1,2 @@
+The problem with memory leak caused by Bind system
+

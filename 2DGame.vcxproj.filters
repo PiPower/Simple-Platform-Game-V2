@@ -19,6 +19,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{60f31efd-ae62-4e47-a3ab-140befa7a5bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Problem">
+      <UniqueIdentifier>{ab658d11-fb58-4aee-87eb-5a8b239405d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX.h">
@@ -83,11 +86,11 @@
     <ClCompile Include="Window.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="BindBase.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
     <ClCompile Include="DirectX.cpp">
       <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="BindBase.cpp">
+      <Filter>Binds</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,5 +100,10 @@
     <FxCompile Include="PS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Problems.txt">
+      <Filter>Problem</Filter>
+    </Text>
   </ItemGroup>
 </Project>

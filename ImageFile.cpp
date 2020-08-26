@@ -63,6 +63,7 @@ const int ImageFile::GetHeight() const noexcept
     return height;
 }
 
+
 ImageFile::~ImageFile()
 {
     if (FileBuff != nullptr)

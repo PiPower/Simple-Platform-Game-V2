@@ -29,7 +29,7 @@ public:
 	void DrawIndexed(UINT size, UINT StartLoc=0, UINT BaseLoc=0);
 	void BeginFrame(const float& R,const float& G,const float& B,const float& A);
 	void Resize(HWND hwnd, int width, int height);
-public:
+private:
 	struct cBuff
 	{
 		float Proportion;

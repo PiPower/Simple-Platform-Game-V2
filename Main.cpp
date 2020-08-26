@@ -1,6 +1,8 @@
 #include "Window.h"
 #include "GraphicalObject.h"
 
+
+
 int main()
 {
 	Window wnd(1600, 900, L"klasa", L"HUJ");
@@ -20,4 +22,5 @@ int main()
 		obj.Draw();
 		wnd.DX_EndFrame();
 	}
+
 }
