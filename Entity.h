@@ -1,6 +1,9 @@
 #pragma once
 #include "GraphicalObject.h"
 #include "Window.h"
+#include "Creature.h"
+#include <list>
+
 class Entity : public GraphicalObject
 {
 
@@ -12,7 +15,8 @@ class Entity : public GraphicalObject
 	};
 public:
 	using::GraphicalObject::GraphicalObject;
-	void UpdatePos(Window& wnd, float Time, Camera& cam, std::vector<GraphicalObject*>& Blocks,bool BuilderMode);
+	void UpdatePos(Window& wnd, float Time, Camera& cam, std::list<GraphicalObject*>& Blocks,bool BuilderMode);
+	bool ContactWithMonstet(std::list<Creature*>& Creatures);
 	bool RectVsRey(const DirectX::XMFLOAT2& RayOrigin, const DirectX::XMFLOAT2& RayDir,
 		 const CollRect& rect, DirectX::XMFLOAT2& ContactPoint, DirectX::XMFLOAT2& ContactNormal, float& t_hit_near);
 	bool DynamicRectVsRect(const CollRect& in, DirectX::XMFLOAT2& Velocity, const CollRect& target, DirectX::XMFLOAT2& contact_point,

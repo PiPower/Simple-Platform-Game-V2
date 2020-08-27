@@ -1,4 +1,4 @@
-#include "Entity.h"
+#include "Creature.h"
 #include <functional>
 #include <cmath>
 #include <queue>
@@ -6,6 +6,7 @@
 
 using namespace DirectX;
 using namespace std;
+
 
 class Comparision
 {
@@ -15,86 +16,53 @@ public:
 		return p1.second > p2.second;
 	}
 };
-void Entity::UpdatePos(Window& wnd, float Time, Camera& cam, std::list<GraphicalObject*>& Blocks, bool BuilderMode)
+
+/*Creature::Creature(Graphics* gfx, std::wstring path, float OffsetX, float OffsetY, float ScaleX, float ScaleY, float RotationAngle)
+	:
+	GraphicalObject(gfx,path,OffsetX,OffsetY,ScaleX,ScaleY,RotationAngle)
 {
+}*/
 
-	XMFLOAT2 MoveVec = { 0,-0.6f };
+void Creature::UpdatePos(std::list<GraphicalObject*>& Blocks, float Time)
+{
+	auto CreatureRect = GetRect();
 
-	if (wnd.IsKeyPressed('D')) MoveVec.x += VelX;
-	if (wnd.IsKeyPressed('A')) MoveVec.x += -VelX;
-	if (wnd.IsKeyPressed('W'))MoveVec.y += 3*VelY;
-	if (wnd.IsKeyPressed('S')) MoveVec.y += -VelY;
-	if (wnd.IsKeyPressed(VK_SPACE) && !Jump)
-	{
-		JumpFactor = 1.0f;
-		Jump = true;
-	}
-	MoveVec.y += 5 * VelY * JumpFactor;
-	if (JumpFactor != 0) JumpFactor -= 0.1f;
+	XMFLOAT2 MoveVec = Vel;
 
-
-	CollRect PlayerRect = GetRect();
-	// Collisons
 	XMFLOAT2 contact_point;
 	XMFLOAT2 contact_normal{ 0,0 };
 	float contact_time;
 
 	XMFLOAT2 senVel = { MoveVec.x * Time,MoveVec.y * Time };
-	priority_queue<pair<GraphicalObject*, float>,vector<pair<GraphicalObject*, float>>, Comparision> Rects;
+	priority_queue<pair<GraphicalObject*, float>, vector<pair<GraphicalObject*, float>>, Comparision> Rects;
 
 
 	for (auto Block : Blocks)
 	{
-		if (DynamicRectVsRect(PlayerRect, senVel, Block->GetRect (), contact_point, contact_normal, contact_time))
+		if (DynamicRectVsRect(CreatureRect, senVel, Block->GetRect(), contact_point, contact_normal, contact_time))
 		{
 			Rects.push({ Block,contact_time });
 		}
 	}
 
-	while(!Rects.empty())
+	while (!Rects.empty())
 	{
 		auto Rect = Rects.top();
 		Rects.pop();
 
-		if (DynamicRectVsRect(PlayerRect, MoveVec, Rect.first->GetRect(), contact_point, contact_normal, contact_time))
+		if (DynamicRectVsRect(CreatureRect, MoveVec, Rect.first->GetRect(), contact_point, contact_normal, contact_time))
 		{
 			MoveVec.x += contact_normal.x * (1.0f - contact_time) * abs(MoveVec.x);
 			MoveVec.y += contact_normal.y * (1.0f - contact_time) * abs(MoveVec.y);
-			if (contact_normal.y == 1)
-			{
-				JumpFactor = 0;
-				Jump = false;
-			}
+
+			if (contact_normal.x == 1 || contact_normal.x == -1) Vel.x = -Vel.x;
 		}
 	}
 
 	Move(MoveVec.x * Time, MoveVec.y * Time);
-
-	PlayerRect = GetRect();
-	if (!BuilderMode &&( PlayerRect.TopLeft.x + cam.X < -0.7|| PlayerRect.BottomRight.x + cam.X > 0.7)  )  cam.X += -MoveVec.x * Time;
-	if (!BuilderMode && (PlayerRect.TopLeft.y + cam.Y > 0.5 || PlayerRect.BottomRight.y + cam.Y < -0.5))  cam.Y += -MoveVec.y * Time;
 }
 
-bool Entity::ContactWithMonstet(std::list<Creature*>& Creatures)
-{
-	auto Mario = GetRect();
-
-	for (auto p : Creatures)
-	{
-		auto creature = p->GetRect();
-
-		if (Mario.TopLeft.x < creature.BottomRight.x && Mario.BottomRight.x > creature.TopLeft.x &&
-			Mario.BottomRight.y >  creature.BottomRight.y && Mario.TopLeft.x> creature.TopLeft.y && Mario.BottomRight.y < creature.TopLeft.y)
-		{
-			return true;
-		}
-
-	}
-	return false;
-}
-
-
-bool Entity::RectVsRey(const DirectX::XMFLOAT2& RayOrigin, const DirectX::XMFLOAT2& RayDir, const CollRect& rect,
+bool Creature::RectVsRey(const DirectX::XMFLOAT2& RayOrigin, const DirectX::XMFLOAT2& RayDir, const CollRect& rect,
 	DirectX::XMFLOAT2& ContactPoint, DirectX::XMFLOAT2& ContactNormal, float& t_hit_near)
 {
 	XMFLOAT2 t_near{ (rect.TopLeft.x - RayOrigin.x) / RayDir.x,(rect.TopLeft.y - RayOrigin.y) / RayDir.y };
@@ -138,7 +106,7 @@ bool Entity::RectVsRey(const DirectX::XMFLOAT2& RayOrigin, const DirectX::XMFLOA
 	return true;
 }
 
-bool Entity::DynamicRectVsRect(const CollRect& in, DirectX::XMFLOAT2& Velocity, const CollRect& target,
+bool Creature::DynamicRectVsRect(const CollRect& in, DirectX::XMFLOAT2& Velocity, const CollRect& target,
 	DirectX::XMFLOAT2& contact_point, DirectX::XMFLOAT2& contact_normal, float& contact_time)
 {
 	if (Velocity.x == 0 && Velocity.y == 0)
