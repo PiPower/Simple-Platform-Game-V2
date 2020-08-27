@@ -205,9 +205,8 @@ void Board::Controll(Window& wnd)
 	const auto old = last;
 	last = steady_clock::now();
 	const duration<float> frameTime = last - old;
-	// Collision and updating mario pos
 
-
+	// Collision and updating monsters pos 
 	if (!BuilderMode)
 	{
 		for (auto creature : Monsters)
@@ -217,12 +216,11 @@ void Board::Controll(Window& wnd)
 	}
 
 
-
+	// Collision and updating mario pos
 	if (!lost)
 	{
 		Mario->UpdatePos(wnd, frameTime.count(), cam, Blocks, BuilderMode);
-
-		lost = Mario->ContactWithMonstet(Monsters);
+		lost = Mario->ContactWithMonstet(Monsters,BlockScale);
 	}
 }
 

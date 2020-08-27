@@ -75,7 +75,7 @@ void Entity::UpdatePos(Window& wnd, float Time, Camera& cam, std::list<Graphical
 	if (!BuilderMode && (PlayerRect.TopLeft.y + cam.Y > 0.5 || PlayerRect.BottomRight.y + cam.Y < -0.5))  cam.Y += -MoveVec.y * Time;
 }
 
-bool Entity::ContactWithMonstet(std::list<Creature*>& Creatures)
+bool Entity::ContactWithMonstet(std::list<Creature*>& Creatures,float BlockScale)
 {
 	auto Mario = GetRect();
 
@@ -83,12 +83,18 @@ bool Entity::ContactWithMonstet(std::list<Creature*>& Creatures)
 	{
 		auto creature = p->GetRect();
 
-		if (Mario.TopLeft.x < creature.BottomRight.x && Mario.BottomRight.x > creature.TopLeft.x &&
-			Mario.BottomRight.y >  creature.BottomRight.y && Mario.TopLeft.x> creature.TopLeft.y && Mario.BottomRight.y < creature.TopLeft.y)
+		if (!p->IsDead() && Mario.TopLeft.x < creature.BottomRight.x && Mario.BottomRight.x > creature.TopLeft.x)
 		{
-			return true;
-		}
+			if (abs(Mario.BottomRight.y - creature.BottomRight.y) <= (BlockScale / 2) && abs(Mario.TopLeft.y - creature.TopLeft.y) <= (BlockScale / 2))
+			{
+				return true;
+			}
+			else if (Mario.BottomRight.y - creature.TopLeft.y <= -(BlockScale/4))
+			{
+				p->Kill();
+			}
 
+		}
 	}
 	return false;
 }

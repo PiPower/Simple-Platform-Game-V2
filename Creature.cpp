@@ -25,41 +25,44 @@ public:
 
 void Creature::UpdatePos(std::list<GraphicalObject*>& Blocks, float Time)
 {
-	auto CreatureRect = GetRect();
-
-	XMFLOAT2 MoveVec = Vel;
-
-	XMFLOAT2 contact_point;
-	XMFLOAT2 contact_normal{ 0,0 };
-	float contact_time;
-
-	XMFLOAT2 senVel = { MoveVec.x * Time,MoveVec.y * Time };
-	priority_queue<pair<GraphicalObject*, float>, vector<pair<GraphicalObject*, float>>, Comparision> Rects;
-
-
-	for (auto Block : Blocks)
+	if (!isDead)
 	{
-		if (DynamicRectVsRect(CreatureRect, senVel, Block->GetRect(), contact_point, contact_normal, contact_time))
+		auto CreatureRect = GetRect();
+
+		XMFLOAT2 MoveVec = Vel;
+
+		XMFLOAT2 contact_point;
+		XMFLOAT2 contact_normal{ 0,0 };
+		float contact_time;
+
+		XMFLOAT2 senVel = { MoveVec.x * Time,MoveVec.y * Time };
+		priority_queue<pair<GraphicalObject*, float>, vector<pair<GraphicalObject*, float>>, Comparision> Rects;
+
+
+		for (auto Block : Blocks)
 		{
-			Rects.push({ Block,contact_time });
+			if (DynamicRectVsRect(CreatureRect, senVel, Block->GetRect(), contact_point, contact_normal, contact_time))
+			{
+				Rects.push({ Block,contact_time });
+			}
 		}
-	}
 
-	while (!Rects.empty())
-	{
-		auto Rect = Rects.top();
-		Rects.pop();
-
-		if (DynamicRectVsRect(CreatureRect, MoveVec, Rect.first->GetRect(), contact_point, contact_normal, contact_time))
+		while (!Rects.empty())
 		{
-			MoveVec.x += contact_normal.x * (1.0f - contact_time) * abs(MoveVec.x);
-			MoveVec.y += contact_normal.y * (1.0f - contact_time) * abs(MoveVec.y);
+			auto Rect = Rects.top();
+			Rects.pop();
 
-			if (contact_normal.x == 1 || contact_normal.x == -1) Vel.x = -Vel.x;
+			if (DynamicRectVsRect(CreatureRect, MoveVec, Rect.first->GetRect(), contact_point, contact_normal, contact_time))
+			{
+				MoveVec.x += contact_normal.x * (1.0f - contact_time) * abs(MoveVec.x);
+				MoveVec.y += contact_normal.y * (1.0f - contact_time) * abs(MoveVec.y);
+
+				if (contact_normal.x == 1 || contact_normal.x == -1) Vel.x = -Vel.x;
+			}
 		}
-	}
 
-	Move(MoveVec.x * Time, MoveVec.y * Time);
+		Move(MoveVec.x * Time, MoveVec.y * Time);
+	}
 }
 
 bool Creature::RectVsRey(const DirectX::XMFLOAT2& RayOrigin, const DirectX::XMFLOAT2& RayDir, const CollRect& rect,
@@ -132,4 +135,10 @@ bool Creature::DynamicRectVsRect(const CollRect& in, DirectX::XMFLOAT2& Velocity
 	}
 
 	return false;
+}
+
+void Creature::Kill()
+{
+	isDead = true;
+	SetUVCord(32, 47, 17, 32);
 }

@@ -13,7 +13,10 @@ public:
 		const CollRect& rect, DirectX::XMFLOAT2& ContactPoint, DirectX::XMFLOAT2& ContactNormal, float& t_hit_near);
 	bool DynamicRectVsRect(const CollRect& in, DirectX::XMFLOAT2& Velocity, const CollRect& target, DirectX::XMFLOAT2& contact_point,
 		DirectX::XMFLOAT2& contact_normal, float& contact_time);
+	bool IsDead() { return isDead;  }
+	void Kill();
 private:
 	DirectX::XMFLOAT2 Vel{ 0.6,-0.6 };
+	bool isDead = false;
 };
 
