@@ -168,7 +168,6 @@ void GraphicalObject::UpdateCamera(Camera Tranformation)
 
 void GraphicalObject::SetUVCord(int LowerBoundX, int HigherBoundX, int LowerBoundY, int HigherBoundY)
 {
-
 	UVTransformer UVTransformer2;
 	UVTransformer2.HigherBoundX = (float)HigherBoundX / Img->GetWidth();
 	UVTransformer2.LowerBoundX = (float)LowerBoundX / Img->GetWidth();
@@ -183,8 +182,6 @@ void GraphicalObject::SetUVCord(int LowerBoundX, int HigherBoundX, int LowerBoun
 			break;
 		}
 	}
-
-
 }
 
 void GraphicalObject::Move(float OffsetX, float OffsetY)
@@ -204,7 +201,7 @@ void GraphicalObject::Rotate(float RotationAngle)
 	this->RotationAngle += RotationAngle;
 }
 
-void GraphicalObject::Draw()
+void GraphicalObject::Draw() const
 {
 
 	PositionTransformer PosTranform;
@@ -226,7 +223,7 @@ void GraphicalObject::Draw()
 	pGFX->DrawIndexed(Indicies);
 }
 
-GraphicalObject::CollRect GraphicalObject::GetRect()
+GraphicalObject::CollRect GraphicalObject::GetRect() const
 {
 	CollRect ret;
 

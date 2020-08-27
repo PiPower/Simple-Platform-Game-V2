@@ -15,7 +15,7 @@ public:
 		return p1.second > p2.second;
 	}
 };
-void Entity::UpdatePos(Window& wnd, float Time, Camera& cam, std::vector<GraphicalObject*>& Blocks)
+void Entity::UpdatePos(Window& wnd, float Time, Camera& cam, std::vector<GraphicalObject*>& Blocks, bool BuilderMode)
 {
 
 	XMFLOAT2 MoveVec = { 0,-0.6f };
@@ -71,7 +71,7 @@ void Entity::UpdatePos(Window& wnd, float Time, Camera& cam, std::vector<Graphic
 	Move(MoveVec.x * Time, MoveVec.y * Time);
 
 	PlayerRect = GetRect();
-	if (PlayerRect.TopLeft.x + cam.X < -1.0|| PlayerRect.BottomRight.x + cam.X > 1.0)  cam.X += -MoveVec.x * Time;
+	if (!BuilderMode &&( PlayerRect.TopLeft.x + cam.X < -1.0|| PlayerRect.BottomRight.x + cam.X > 1.0)  )  cam.X += -MoveVec.x * Time;
 }
 
 

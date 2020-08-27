@@ -41,9 +41,16 @@ public:
 	void Move(float OffsetX = 0, float OffsetY = 0);
 	void Scale(float ScaleX = 1, float ScaleY = 1);
 	void Rotate(float RotationAngle);
-	void Draw();
+	void Draw() const;
 	// For collision detection
-	CollRect GetRect();
+	CollRect GetRect() const;
+	// Getters
+	float GetScaleX() const { return ScaleX; }
+	float GetScaleY() const { return ScaleY; }
+	float GetOffsetX() const { return OffsetX; }
+	float GetOffsetY() const { return OffsetX; }
+	float GetRotationAngle() const { return RotationAngle; };
+
 	~GraphicalObject();
 protected:
 	struct Point

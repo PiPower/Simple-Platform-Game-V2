@@ -4,6 +4,7 @@ using namespace std;
 using namespace DirectX;
 using namespace std::chrono;
 
+
 Board::Board(Graphics* pGFX,float BlockScale)
 	:
 	pGFX(pGFX) , BlockScale(BlockScale)
@@ -69,7 +70,8 @@ void Board::Controll(Window& wnd)
 	while (!wnd.IsMouseEventEmpty())
 	{
 		const auto e = wnd.ReadMouseEvent();
-		if (e.Type == Window::MouseEvent::Event::LeftPress)
+		// Addind Block------------------------------------------------
+		if (e.Type == Window::MouseEvent::Event::LeftPress && BuilderMode)
 		{
 			float PosX = wnd.GetMousePosXNormalized() / proportion;
 			float PosY = wnd.GetMousePosYNormalized();
@@ -84,29 +86,71 @@ void Board::Controll(Window& wnd)
 			Blocks.push_back(NewRect);
 
 		}
+		//Deleting block------------------------------------------------
+		else if (e.Type == Window::MouseEvent::Event::RightPress && BuilderMode)
+		{
+			float PosX = wnd.GetMousePosXNormalized() / proportion;
+			float PosY = wnd.GetMousePosYNormalized();
+
+			int BlockNumbX = floor((PosX + BlockScale) / (BlockScale * 2));
+			int BlockNumbY = floor((PosY + BlockScale) / (BlockScale * 2));
+
+			Blocks.remove_if([BlockNumbX, BlockNumbY,this](GraphicalObject* block )
+				{
+					auto Rect = block->GetRect();
+
+					float val1 =-BlockScale +  BlockNumbX * (this->BlockScale * 2) - this->cam.X;
+					float val2 = BlockScale +   BlockNumbY * (this->BlockScale * 2) - this->cam.Y;
+
+					bool Cond1 = abs(val1 - Rect.TopLeft.x) <= 0.03;
+					bool Cond2 = abs(val2 - Rect.TopLeft.y) <= 0.03;
+
+					if (Cond1 && Cond2)
+					{
+						delete block;
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+				}
+			);
+		}
+		if (e.Type == Window::MouseEvent::Event::WheelPrees)
+		{
+			BuilderMode = !BuilderMode;
+		}
 	}
-								   
-	if (wnd.IsKeyPressed(VK_UP))   cam.Y +=-BlockScale * 2;
-	if (wnd.IsKeyPressed(VK_DOWN)) cam.Y += BlockScale * 2;
-	if (wnd.IsKeyPressed(VK_RIGHT))cam.X +=-BlockScale * 2;
-	if (wnd.IsKeyPressed(VK_LEFT)) cam.X += BlockScale * 2;
+			
+	if (BuilderMode)
+	{
+		if (wnd.IsKeyPressed(VK_UP))   cam.Y += -BlockScale * 2;
+		if (wnd.IsKeyPressed(VK_DOWN)) cam.Y += BlockScale * 2;
+		if (wnd.IsKeyPressed(VK_RIGHT))cam.X += -BlockScale * 2;
+		if (wnd.IsKeyPressed(VK_LEFT)) cam.X += BlockScale * 2;
+	}
 
 	// Time stuff
 
 	const auto old = last;
 	last = steady_clock::now();
 	const duration<float> frameTime = last - old;
-	Mario->UpdatePos(wnd, frameTime.count(), cam, Blocks);
+	// Collision and updating mario pos
+
+	//Mario->UpdatePos(wnd, frameTime.count(), cam, Blocks,BuilderMode);
 }
 
 void Board::Draw()
 {
-	for (auto b : ScreenBinds)
+	if (BuilderMode)
 	{
-		b->Bind();
+		for (auto b : ScreenBinds)
+		{
+			b->Bind();
+		}
+		pGFX->Draw(VertexCount);
 	}
-
-	pGFX->Draw(VertexCount);
 
 	for (auto rect : Blocks)
 	{

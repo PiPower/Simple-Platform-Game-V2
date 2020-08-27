@@ -5,7 +5,7 @@
 #include "Window.h"
 #include "Entity.h"
 #include <chrono>
-
+#include <list>
 
 typedef std::chrono::time_point<std::chrono::high_resolution_clock> TimePoint;
 class Board
@@ -30,11 +30,12 @@ public:
 	void Draw();
 private:
 	std::vector<BindBase* >ScreenBinds;
-	std::vector<GraphicalObject* > Blocks;
+	std::list<GraphicalObject* > Blocks;
 	GraphicalObject::Camera cam{ 0,0 };
 	int VertexCount;
 	float proportion;
 	float BlockScale;
+	bool BuilderMode = true;
 	Graphics* pGFX;
 	Entity* Mario = nullptr;
 	TimePoint last;
