@@ -1,5 +1,6 @@
 #pragma once
 #include "BindPack.h"
+#include <fstream>
 #include <vector>
 
 class GraphicalObject
@@ -41,6 +42,7 @@ public:
 	void Move(float OffsetX = 0, float OffsetY = 0);
 	void Scale(float ScaleX = 1, float ScaleY = 1);
 	void Rotate(float RotationAngle);
+	void Save(std::fstream& stream);
 	void Draw() const;
 	// For collision detection
 	CollRect GetRect() const;

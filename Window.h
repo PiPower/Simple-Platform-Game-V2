@@ -12,6 +12,10 @@
 #include <gdiplusenums.h>
 #include <gdiplus.h>
 #include "DirectX.h"
+#include <chrono>
+
+
+typedef std::chrono::time_point<std::chrono::high_resolution_clock> TimePoint;
 
 class Window
 {
@@ -114,6 +118,10 @@ private:
 	std::queue<MouseEvent> MouseQueue;
 	// Graphics ------------------------------------
 	std::wstring lol;
+	std::wstring WindowName;
+
 	Graphics*  pDx11 = nullptr;
+	TimePoint last;
+	TimePoint old;
 };
 

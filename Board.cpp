@@ -1,5 +1,5 @@
 #include "Board.h"
-
+#include <string>
 using namespace std;
 using namespace DirectX;
 using namespace std::chrono;
@@ -193,9 +193,17 @@ void Board::Controll(Window& wnd)
 			{
 				switcher = AddingElem::Block;
 			}
-			if (e.Type == Window::KeyEvent::Event::Press && e.Code == '2')
+			else if (e.Type == Window::KeyEvent::Event::Press && e.Code == '2')
 			{
 				switcher = AddingElem::Creature;
+			}
+			else if (e.Type == Window::KeyEvent::Event::Press && e.Code == 'P')
+			{
+				SaveBoard("Blocks.txt");
+			}
+			else if (e.Type == Window::KeyEvent::Event::Press && e.Code == 'O')
+			{
+				LoadBoard("Blocks.txt");
 			}
 		}
 	}
@@ -222,6 +230,52 @@ void Board::Controll(Window& wnd)
 		Mario->UpdatePos(wnd, frameTime.count(), cam, Blocks, BuilderMode);
 		lost = Mario->ContactWithMonstet(Monsters,BlockScale);
 	}
+}
+
+void Board::SaveBoard(std::string path)
+{
+	std::fstream file(path.c_str(), ios::out | ios::trunc);
+	for (auto block : Blocks)
+	{
+		block->Save(file);
+	}
+
+	file.close();
+}
+
+void Board::LoadBoard(std::string path)
+{
+	fstream File(path.c_str(), ios::in);
+
+	string Line;
+	vector<float>Data;
+	while (getline(File,Line))
+	{
+		string Number ="";
+		for (auto c : Line)
+		{
+			if (c == ' ')
+			{
+				Data.push_back(stof(Number));
+				Number.clear();
+			}
+			else
+			{
+				Number += c;
+			}
+		}
+		Data.push_back(stof(Number));
+		GraphicalObject* NewRect = new GraphicalObject(pGFX, L"D:\\C++\\Programy C++\\2DGame\\Image\\Blocks.png"
+		, Data[0], Data[1], Data[2], Data[3], Data[4]);
+
+		NewRect->SetUVCord(97, 113, 1, 17);
+		NewRect->BindCamera(cam);
+
+		Blocks.push_back(NewRect);
+		Data.clear();
+	}
+
+	File.close();
 }
 
 

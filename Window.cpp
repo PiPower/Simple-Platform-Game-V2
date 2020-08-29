@@ -3,11 +3,11 @@
 #include <string>
 #include <assert.h>
 #include <strsafe.h>
-
 using namespace std;
+using namespace std::chrono;
 
 Window::Window(int width, int height, std::wstring CLassName, std::wstring WndName)
-	:Hinstace(GetModuleHandle(nullptr)), width(width), height(height),CLASS_NAME(CLassName)
+	:Hinstace(GetModuleHandle(nullptr)), width(width), height(height),CLASS_NAME(CLassName), WindowName(WndName)
 {
 	WNDCLASSEX  wc{};
 	wc.cbSize = sizeof(wc);
@@ -43,6 +43,16 @@ Window::Window(int width, int height, std::wstring CLassName, std::wstring WndNa
 int Window::ProcessMessages() noexcept
 {
 	MSG msg;
+
+	const auto old = last;
+	last = steady_clock::now();
+	const duration<float> frameTime = last - old;
+
+	int FPS = 1 / frameTime.count();
+	lol.clear();
+
+	lol = WindowName + L" FPS: " + to_wstring(FPS);
+	SetWindowText(hwnd, lol.c_str());
 	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 	{
 

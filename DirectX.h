@@ -7,15 +7,7 @@
 #include <d2d1.h>
 #include <dwrite.h>
 #include <chrono>
-struct Point
-{
-	Point(float x, float y,float u,float v) :X(x), Y(y),U(u),V(v) {}
 
-	float X, Y;
-	float U, V;
-};
-
-class BindBase;
 
 class Graphics
 {

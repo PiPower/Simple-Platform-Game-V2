@@ -24,10 +24,11 @@ void Entity::UpdatePos(Window& wnd, float Time, Camera& cam, std::list<Graphical
 	if (wnd.IsKeyPressed('A')) MoveVec.x += -VelX;
 	if (wnd.IsKeyPressed('W'))MoveVec.y += 3*VelY;
 	if (wnd.IsKeyPressed('S')) MoveVec.y += -VelY;
-	if (wnd.IsKeyPressed(VK_SPACE) && !Jump)
+	if ((wnd.IsKeyPressed(VK_SPACE) && !Jump) || MakeJump )
 	{
 		JumpFactor = 1.0f;
 		Jump = true;
+		MakeJump = false;
 	}
 	MoveVec.y += 5 * VelY * JumpFactor;
 	if (JumpFactor != 0) JumpFactor -= 0.1f;
@@ -91,6 +92,7 @@ bool Entity::ContactWithMonstet(std::list<Creature*>& Creatures,float BlockScale
 			}
 			else if (Mario.BottomRight.y - creature.TopLeft.y <= -(BlockScale/4))
 			{
+				MakeJump = true;
 				p->Kill();
 			}
 

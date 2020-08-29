@@ -7,8 +7,8 @@
 #include "Creature.h"
 #include <chrono>
 #include <list>
+#include <fstream>
 
-typedef std::chrono::time_point<std::chrono::high_resolution_clock> TimePoint;
 class Board
 {
 private:
@@ -33,6 +33,8 @@ private:
 public:
 	Board(Graphics* pGFX, float BlockScale );
 	void Controll(Window& wnd);
+	void SaveBoard(std::string path);
+	void LoadBoard(std::string path);
 	void Draw();
 private:
 	std::vector<BindBase* >ScreenBinds;

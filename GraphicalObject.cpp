@@ -201,6 +201,20 @@ void GraphicalObject::Rotate(float RotationAngle)
 	this->RotationAngle += RotationAngle;
 }
 
+void GraphicalObject::Save(std::fstream& stream)
+{
+	stream << OffsetX;
+	stream << ' ';
+	stream << OffsetY;
+	stream << ' ';
+	stream << ScaleX;
+	stream << ' ';
+	stream << ScaleY;
+	stream << ' ';
+	stream << RotationAngle;
+	stream << '\n';
+}
+
 void GraphicalObject::Draw() const
 {
 
