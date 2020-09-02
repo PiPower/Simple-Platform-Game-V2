@@ -203,6 +203,7 @@ void Board::Controll(Window& wnd)
 			}
 			else if (e.Type == Window::KeyEvent::Event::Press && e.Code == 'O')
 			{
+				wnd.SimpleTypeBox();
 				LoadBoard("Blocks.txt");
 			}
 		}

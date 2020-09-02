@@ -160,6 +160,7 @@
     <ClInclude Include="PixelShaderBind.h" />
     <ClInclude Include="PrimitiveTopologyBind.h" />
     <ClInclude Include="PSConstantBufferBind.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SamplerBind.h" />
     <ClInclude Include="TextureBind.h" />
     <ClInclude Include="VertexBufferBind.h" />

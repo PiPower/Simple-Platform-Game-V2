@@ -92,6 +92,8 @@ public:
 	void DX_BeginFrame(const float& R=0, const float& G=0, const float& B=0, const float& A=0);
 	Graphics* GetGraphicsPointer() { return pDx11; }
 	void DX_EndFrame();
+	//------------------------
+	void SimpleTypeBox();
 private:
 	static LRESULT CALLBACK  HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	LRESULT HandleMsg(UINT msg, WPARAM wParam, LPARAM lParam);

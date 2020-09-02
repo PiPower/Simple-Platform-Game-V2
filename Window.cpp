@@ -227,6 +227,13 @@ void Window::DX_EndFrame()
 	pDx11->EndFrame();
 }
 
+void Window::SimpleTypeBox()
+{
+	HWND  g_hPrzycisk = CreateWindowEx(0, L"BUTTON", L"Checkbox", WS_CHILD | WS_VISIBLE | BS_CHECKBOX,100, 100, 150, 30, hwnd, NULL, Hinstace, NULL);
+	ShowWindow(g_hPrzycisk, SW_SHOWDEFAULT);
+
+}
+
 
 LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
